@@ -158,6 +158,8 @@ jobs:
       - name: Build the app against local bindings
         run: npm run build --prefix frontend
 
+      # Writes the total and the largest chunks to the summary before it fails,
+      # so a budget failure shows what grew without building locally.
       - name: Enforce the app's bundle size budget
         run: ./frontend/scripts/check-bundle-size.sh >> "$GITHUB_STEP_SUMMARY"
 

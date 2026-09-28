@@ -63,6 +63,25 @@ the bundle baseline only once growth is confirmed to be intentional, and record
 an advisory exception only with a stated reason, in
 `.github/npm-audit-exceptions.json`.
 
+### Bundle size
+
+The budget check writes two tables to the CI job summary on every run, passing
+or failing: the total JavaScript size against the budget, and the ten largest
+chunks with their raw and gzip sizes and share of the total. When the budget
+fails, the second table is where to look for what grew — compare it with the
+same table on a recent `main` run. Chunk names carry a content hash, so match
+them by the part before the hash.
+
+To run it locally, build first, since it measures `dist/assets`:
+
+```sh
+npm run build
+./scripts/check-bundle-size.sh
+```
+
+It prints the same Markdown tables and exits non-zero when the budget is
+exceeded. It runs under the bash that macOS ships as well as on Linux.
+
 The [testing guide](docs/testing-guide.md) covers mocking a contract client,
 the no-network rule, and what the reachability check means when it fires.
 
